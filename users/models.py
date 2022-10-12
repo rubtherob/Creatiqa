@@ -39,6 +39,12 @@ class MyUserManager(BaseUserManager):
         # Возвращаем нового созданного админа
         return self._create_user(email, password, is_staff=True, is_superuser=True)
 
+def get_profile_image_filepath(self, filename):
+    return 'profile_images/' + str(self.pk) + '/profile_image.png'
+
+
+def get_default_profile_image():
+    return "img/logo.png"
 
 # Создаём класс User
 class User(AbstractBaseUser, PermissionsMixin):
@@ -48,7 +54,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)  # Статус активации
     is_staff = models.BooleanField(default=False)  # Статус админа
     phone = PhoneField(blank=True, help_text='Contact phone number')
-
+    profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True,
+                                      default=get_default_profile_image)
 
     USERNAME_FIELD = 'email'  # Идентификатор для обращения
 
@@ -57,3 +64,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Метод для отображения в админ панели
     def __str__(self):
         return self.email
+
+    def get_profile_image_filename(self):
+        return str(self.profile_image)[str(self.profile_image).index('profile_images/' + str(self.pk) + "/"):]
+
+
+
+
