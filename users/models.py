@@ -45,9 +45,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True, unique=True)  # Идентификатор
     email = models.EmailField(max_length=100, unique=True)  # Email
     first_name = models.CharField(max_length=20)
-    is_active = models.BooleanField(default=True)  # Статус активации
+    is_active = models.BooleanField(default=False)  # Статус активации
     is_staff = models.BooleanField(default=False)  # Статус админа
-    phone = PhoneField(blank=True, help_text='Contact phone number')
+    phone = PhoneField(help_text='Contact phone number')
+    activate_code = models.CharField(max_length=5, blank=True)
 
 
     USERNAME_FIELD = 'email'  # Идентификатор для обращения

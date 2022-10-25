@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'pattern',
     'phone_field',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,4 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 
+SMS_BACKEND = 'sms.backends.console.SmsBackend'

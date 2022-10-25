@@ -1,10 +1,10 @@
 import string
+from random import random
 
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 # Подключаем модель user
 from .models import User
-
 
 
 class UserRegistrSerializer(serializers.ModelSerializer):
@@ -23,6 +23,9 @@ class UserRegistrSerializer(serializers.ModelSerializer):
         # Создаём объект класса User
         user = User(
             email=self.validated_data['email'],  # Назначаем Email
+            phone=self.validated_data['phone'],
+            first_name=self.validated_data['first_name'],
+            activate_code=''
         )
         # Проверяем на валидность пароль
         password = self.validated_data['password']
@@ -38,6 +41,33 @@ class UserRegistrSerializer(serializers.ModelSerializer):
         # Сохраняем пароль
         user.set_password(password)
         # Сохраняем пользователя
+        print(user)
         user.save()
         # Возвращаем нового пользователя
         return user
+
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    # Поле для повторения пароля
+
+
+    # Настройка полей
+    class Meta:
+        # Поля модели которые будем использовать
+        model = User
+        # Назначаем поля которые будем использовать
+        fields = ['email', 'phone', 'first_name']
+
+
+class UserVerifySerializer(serializers.ModelSerializer):
+    # Поле для повторения пароля
+
+
+    # Настройка полей
+    class Meta:
+        # Поля модели которые будем использовать
+        model = User
+        # Назначаем поля которые будем использовать
+        fields = ['phone']
